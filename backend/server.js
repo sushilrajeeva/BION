@@ -1,10 +1,14 @@
 import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
+import cors from "cors"; // Add this
 import { dbConnection, closeConnection } from "./config/mongoConnection.js";
-import routes from "./routes/index.js"; // Import your routes
+import routes from "./routes/index.js";
 
 const app = express();
+
+// Enable All CORS Requests
+app.use(cors()); // Add this
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -18,7 +22,7 @@ app.use(
   })
 );
 
-app.use("/", routes); // Use your routes in your Express application
+app.use("/", routes);
 
 app.use((req, res, next) => {
   // Catch 404 and forward to error handler
@@ -33,7 +37,6 @@ app.listen(3000, async () => {
   console.log("Your routes will be running on http://localhost:3000");
 });
 
-// Close connection when the server stops
 process.on("SIGINT", async () => {
   await closeConnection();
   process.exit(0);

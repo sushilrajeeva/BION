@@ -19,4 +19,28 @@ router.route("/").get(async (req, res) => {
   }
 });
 
+router.route("/register").post(async (req, res) => {
+  try {
+    console.log("Register post method is called in ExpressJS server!");
+
+    // validate the data here using Joi or similar
+    // const { error } = validationSchema.validate(req.body);
+    // if (error) return res.status(400).send(error.details[0].message);
+
+    // hash the password here if it's included in the data
+    // req.body.password = await bcrypt.hash(req.body.password, saltRounds);
+
+    console.log("Register user recieved -> ", req.body);
+
+    // Consider not returning the entire user object for privacy/security
+    // Consider returning only the needed data
+    res.status(200).json({ adminUser: "Register User Created!" });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while registering the admin" });
+  }
+});
+
 export default router;
