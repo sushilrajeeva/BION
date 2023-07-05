@@ -1,0 +1,62 @@
+.login-container {
+    max-width: 600px;
+    margin: auto;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .card {
+    margin-bottom: 2rem; 
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .login-button {
+    background-color: #3f51b5;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    outline: none;
+    width: 200px;
+    height: 50px;
+    text-align: center;
+    font-size: 18px;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .login-button:hover {
+    background-color: #283593;
+    box-shadow: 0px 7px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  .login-button:active {
+    background-color: #1a237e;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(4px); /* Moves button down to simulate press */
+  }

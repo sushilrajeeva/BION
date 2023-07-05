@@ -1,0 +1,51 @@
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+              <div class="form-floating mb-3">
+                <input type="email" formControlName="email" class="form-control" id="emailAddress" placeholder="Email Address" required>
+                <label for="emailAddress">Email Address</label>
+                <div *ngIf="loginForm.controls['email'].invalid && (loginForm.controls['email'].dirty || loginForm.controls['email'].touched)" class="text-danger">
+                  <div *ngIf="loginForm.controls['email'].errors?.['required']">
+                    Email is required.
+                  </div>
+                  <div *ngIf="loginForm.controls['email'].errors?.['pattern']">
+                    Please provide a valid email.
+                  </div>
+                </div>
+              </div>
+  
+              <div class="form-floating mb-3">
+                <input type="password" formControlName="password" class="form-control" id="password" placeholder="Password" required>
+                <label for="password">Password</label>
+                <div *ngIf="loginForm.controls['password'].invalid && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)" class="text-danger">
+                  <div *ngIf="loginForm.controls['password'].errors?.['required']">
+                    Password is required.
+                  </div>
+                  <div *ngIf="loginForm.controls['password'].errors?.['minlength']">
+                    Password must be at least 8 characters long.
+                  </div>
+                  <div *ngIf="loginForm.controls['password'].errors?.['pattern']">
+                    Password must contain at least one uppercase letter, one digit and one special character.
+                  </div>
+                </div>
+              </div>
+  
+              <div class="center">
+                <button type="submit" class="login-button" [disabled]="!loginForm.valid">
+                  Login
+                </button>
+              </div>
+              
+              <div class="center">
+                <p>Not a user? <a routerLink="/register">click here to register</a></p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
