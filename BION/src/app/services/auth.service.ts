@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
   private registerUrl = 'http://localhost:3000/register';
-  private loginUrl = 'http://localhost:3000/login';
+  private customerLoginUrl = 'http://localhost:3000/customer/login';
+  private adminLoginUrl = 'http://localhost:3000/admin/login';
 
   constructor(private http: HttpClient) {}
 
@@ -15,8 +16,9 @@ export class AuthService {
     return this.http.post<any>(this.registerUrl, user);
   }
 
-  login(email: string, password: string): Observable<any> {
+  login(email: string, password: string, admin: boolean): Observable<any> {
     const body = { emailAddress: email, password: password };
-    return this.http.post<any>(this.loginUrl, body);
+    const url = admin ? this.adminLoginUrl : this.customerLoginUrl;
+    return this.http.post<any>(url, body);
   }
 }

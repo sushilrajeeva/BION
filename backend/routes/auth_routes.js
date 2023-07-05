@@ -7,6 +7,7 @@ import bcrypt from "bcryptjs";
 import xss from "xss";
 import admin from "../model/admin.js";
 import customer from "../model/customer.js";
+import helpers from "../helpers.js";
 
 router.route("/").get(async (req, res) => {
   //code here for GET THIS ROUTE SHOULD NEVER FIRE BECAUSE OF MIDDLEWARE #1 IN SPECS.
@@ -88,6 +89,101 @@ router.route("/register").post(async (req, res) => {
     console.log(error);
     res.status(500).json({ error: error });
   }
+});
+
+router.route("/admin/login").post(async (req, res) => {
+  console.log("Admin login route is called");
+  try {
+    let emailAddress = xss(req.body.emailAddress);
+    let password = xss(req.body.password);
+    console.log("Sanitized values = ", {
+      emailAddress: emailAddress,
+      password: password,
+    });
+
+    emailAddress = helpers.checkEmptyInputString(emailAddress, "Email Address");
+    emailAddress = emailAddress.toLowerCase();
+    password = helpers.checkEmptyInputString(password, "Password");
+
+    helpers.checkValidEmail(emailAddress);
+    helpers.checkValidPassword(password);
+
+    const loginUser = await admin.checkAdmin(emailAddress, password);
+
+    req.session.user = {
+      _id: xss(loginUser._id.toString()),
+      name: xss(loginUser.name),
+      emailAddress: xss(loginUser.emailAddress),
+      countryCode: xss(loginUser.countryCode),
+      phoneNumber: xss(loginUser.phoneNumber),
+      address: xss(loginUser.address),
+      city: xss(loginUser.city),
+      state: xss(loginUser.state),
+      pinCode: xss(loginUser.pinCode),
+      country: xss(loginUser.country),
+      userType: xss("Admin"),
+    };
+
+    console.log("Ok Admin is logged in!!");
+
+    return res.status(200).json({ sessionUser: req.session.user });
+  } catch (error) {
+    return res.status(404).json({ Error: error });
+  }
+});
+
+router.route("/customer/login").post(async (req, res) => {
+  console.log("Customer login route is called");
+  try {
+    let emailAddress = xss(req.body.emailAddress);
+    let password = xss(req.body.password);
+    console.log("Sanitized values = ", {
+      emailAddress: emailAddress,
+      password: password,
+    });
+
+    emailAddress = helpers.checkEmptyInputString(emailAddress, "Email Address");
+    emailAddress = emailAddress.toLowerCase();
+    password = helpers.checkEmptyInputString(password, "Password");
+
+    helpers.checkValidEmail(emailAddress);
+    helpers.checkValidPassword(password);
+
+    const loginUser = await customer.checkCustomer(emailAddress, password);
+
+    req.session.user = {
+      _id: xss(loginUser._id.toString()),
+      name: xss(loginUser.name),
+      emailAddress: xss(loginUser.emailAddress),
+      countryCode: xss(loginUser.countryCode),
+      phoneNumber: xss(loginUser.phoneNumber),
+      address: xss(loginUser.address),
+      city: xss(loginUser.city),
+      state: xss(loginUser.state),
+      pinCode: xss(loginUser.pinCode),
+      country: xss(loginUser.country),
+      userType: xss("Customer"),
+    };
+
+    console.log("Ok customer is logged in!!");
+
+    return res.status(200).json({ sessionUser: req.session.user });
+  } catch (error) {
+    return res.status(404).json({ Error: error });
+  }
+});
+
+router.route("/logout").get((req, res) => {
+  console.log("Logout route is called!!");
+  req.session.destroy((err) => {
+    if (err) {
+      console.log("Error : Failed to destroy the session during logout.", err);
+      res.status(500).json({ error: "Internal error during logout" });
+    } else {
+      req.session = null;
+      res.status(200).json({ message: "Logged out successfully!" });
+    }
+  });
 });
 
 export default router;

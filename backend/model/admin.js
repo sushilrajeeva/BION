@@ -3,6 +3,7 @@ import { ObjectId } from "mongodb";
 import { adminCollection } from "../config/mongoCollections.js";
 import bcrypt from "bcryptjs";
 import Joi from "joi";
+import helpers from "../helpers.js";
 
 const saltRounds = 12;
 
@@ -92,4 +93,50 @@ export const getAdmin = async (emailAddress) => {
   }
 };
 
-export default { createAdmin, getAdmin };
+export const checkAdmin = async (emailAddress, password) => {
+  try {
+    console.log("Check Admin model is called!");
+
+    emailAddress = helpers.checkEmptyInputString(emailAddress, "Email Address");
+    emailAddress = emailAddress.toLowerCase();
+    password = helpers.checkEmptyInputString(password, "Password");
+
+    helpers.checkValidEmail(emailAddress);
+    helpers.checkValidPassword(password);
+
+    const usersCollection = await adminCollection();
+    const user = await usersCollection.findOne({ emailAddress });
+
+    if (!user) {
+      throw `Either the email address or password is invalid`;
+    }
+
+    let compareToMatch = await bcrypt.compare(password, user.password);
+
+    if (compareToMatch) {
+      console.log("The passwords match.. this is good");
+      return {
+        _id: user._id.toString(),
+        name: user.name,
+        emailAddress: user.emailAddress,
+        countryCode: user.countryCode,
+        phoneNumber: user.phoneNumber,
+        address: user.address,
+        city: user.city,
+        state: user.state,
+        pinCode: user.pinCode,
+        country: user.country,
+      };
+    } else {
+      console.log(
+        "The passwords do not match, this is not good, they should match"
+      );
+      throw `Either the email address or password is invalid`;
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export default { createAdmin, getAdmin, checkAdmin };

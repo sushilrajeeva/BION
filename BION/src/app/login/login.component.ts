@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,10 +15,13 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    console.log('Login componennet called!');
+
     this.loginForm = this.formBuilder.group({
       email: [
         '',
@@ -36,24 +40,39 @@ export class LoginComponent implements OnInit {
           ),
         ],
       ],
+      admin: [false],
     });
   }
 
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.authService
-        .login(this.loginForm.value.email, this.loginForm.value.password)
+        .login(
+          this.loginForm.value.email,
+          this.loginForm.value.password,
+          this.loginForm.value.admin
+        )
         .subscribe(
           (response) => {
-            this.snackBar.open('Logged in successfully!', '', {
-              duration: 2000,
-            });
+            this.snackBar
+              .open('Logged in successfully!', 'close', {
+                duration: 3000,
+              })
+              .afterDismissed()
+              .subscribe(() => {
+                localStorage.setItem(
+                  'sessionUser',
+                  JSON.stringify(response.sessionUser)
+                );
+                console.log(localStorage.getItem('sessionUser'));
+                this.router.navigate(['/homepage']); // Replace '/home' with the actual path to your homepage component
+              });
             // here, you can redirect to another page or do other things
             // this.router.navigateByUrl('/some-page');
           },
           (error) => {
-            this.snackBar.open('Failed to log in.', '', {
-              duration: 2000,
+            this.snackBar.open('Failed to log in.', 'close', {
+              duration: 3000,
             });
           }
         );

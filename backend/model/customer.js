@@ -3,6 +3,7 @@ import { ObjectId } from "mongodb";
 import bcrypt from "bcryptjs";
 import Joi from "joi";
 import { customerCollection } from "../config/mongoCollections.js";
+import helpers from "../helpers.js";
 
 const saltRounds = 12;
 
@@ -94,6 +95,7 @@ export const createCustomer = async (
 
 export const getCustomer = async (emailAddress) => {
   try {
+    console.log("Get customer model is called!");
     const custCol = await customerCollection();
     const custUser = await custCol.findOne({ emailAddress });
 
@@ -104,4 +106,49 @@ export const getCustomer = async (emailAddress) => {
   }
 };
 
-export default { createCustomer, getCustomer };
+export const checkCustomer = async (emailAddress, password) => {
+  try {
+    console.log("Check customer model is called!");
+
+    emailAddress = helpers.checkEmptyInputString(emailAddress, "Email Address");
+    emailAddress = emailAddress.toLowerCase();
+    password = helpers.checkEmptyInputString(password, "Password");
+
+    helpers.checkValidEmail(emailAddress);
+    helpers.checkValidPassword(password);
+
+    const usersCollection = await customerCollection();
+    const user = await usersCollection.findOne({ emailAddress });
+
+    if (!user) {
+      throw `Either the email address or password is invalid`;
+    }
+
+    let compareToMatch = await bcrypt.compare(password, user.password);
+
+    if (compareToMatch) {
+      console.log("The passwords match.. this is good");
+      return {
+        _id: user._id.toString(),
+        name: user.name,
+        emailAddress: user.emailAddress,
+        countryCode: user.countryCode,
+        phoneNumber: user.phoneNumber,
+        address: user.address,
+        city: user.city,
+        state: user.state,
+        pinCode: user.pinCode,
+        country: user.country,
+      };
+    } else {
+      console.log(
+        "The passwords do not match, this is not good, they should match"
+      );
+      throw `Either the email address or password is invalid`;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export default { createCustomer, getCustomer, checkCustomer };
