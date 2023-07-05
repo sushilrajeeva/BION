@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import helpers from '../models/helpers';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -31,7 +32,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -84,13 +86,23 @@ export class RegisterComponent implements OnInit {
 
     this.authService.register(this.registerForm.value).subscribe({
       next: (response) =>
-        this.snackBar.open('Registration Successful', 'Close', {
-          duration: 3000,
-        }),
+        this.snackBar
+          .open('Registration Successful', 'Close', {
+            duration: 3000,
+          })
+          .afterDismissed()
+          .subscribe(() => {
+            this.router.navigate(['/homepage']); // Replace '/home' with the actual path to your homepage component
+          }),
       error: (error) =>
-        this.snackBar.open('Registration Failed', 'Close', {
-          duration: 3000,
-        }),
+        this.snackBar
+          .open('Registration Failed', 'Close', {
+            duration: 3000,
+          })
+          .afterDismissed()
+          .subscribe(() => {
+            this.router.navigate(['/homepage']); // Replace '/home' with the actual path to your homepage component
+          }),
     });
   }
 }
