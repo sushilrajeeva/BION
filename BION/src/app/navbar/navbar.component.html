@@ -5,16 +5,15 @@
     <a routerLink="/contact">Contact Us</a>
   
     <!-- Show these links if a user is not logged in -->
-    <div *ngIf="!sessionUser">
+    <div *ngIf="!isLoggedIn">
       <a routerLink="/login">Login</a>
       <a routerLink="/register">Register</a>
     </div>
   
     <!-- Show these links if a user is logged in -->
-    <div *ngIf="sessionUser">
-      <a *ngIf="sessionUser.userType === 'Admin'" routerLink="/adminDashboard">Admin Dashboard</a>
-      <a *ngIf="sessionUser.userType === 'Customer'" routerLink="/customerDashboard">Customer Dashboard</a>
+    <div *ngIf="isLoggedIn">
+      <a *ngIf="userType === 'Admin'" routerLink="/adminDashboard">Admin Dashboard</a>
+      <a *ngIf="userType === 'Customer'" routerLink="/customerDashboard">Customer Dashboard</a>
       <a (click)="logout()">Logout</a>
     </div>
-  </nav>
-  
+</nav>

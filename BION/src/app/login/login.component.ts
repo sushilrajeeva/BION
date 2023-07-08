@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { LoginStatusService } from '../services/LoginStatusService';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private loginStatusService: LoginStatusService
   ) {}
 
   ngOnInit(): void {
@@ -63,6 +65,10 @@ export class LoginComponent implements OnInit {
                 localStorage.setItem(
                   'sessionUser',
                   JSON.stringify(response.sessionUser)
+                );
+                this.loginStatusService.changeLoginStatus(true);
+                this.loginStatusService.changeUserType(
+                  response.sessionUser.userType
                 );
                 console.log(localStorage.getItem('sessionUser'));
                 this.router.navigate(['/homepage']); // Replace '/home' with the actual path to your homepage component
