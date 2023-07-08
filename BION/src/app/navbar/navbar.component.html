@@ -31,17 +31,19 @@
         </div>
 
         <!-- Show user profile dropdown if a user is logged in -->
-        <div class="dropdown" *ngIf="isLoggedIn">
-            <a class="dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="/logo.png" alt="User profile" class="rounded-circle" style="height: 2.5rem; width: 2.5rem; object-fit: cover; margin-right: 10px;">
+        <!-- Show user profile dropdown if a user is logged in -->
+        <div class="dropdown" *ngIf="isLoggedIn" ngbDropdown>
+            <a class="dropdown-toggle" id="userDropdown" role="button" ngbDropdownToggle>
+                <img src="../../assets/images/dev7.jpg" alt="User profile" class="rounded-circle" style="height: 2.5rem; width: 2.5rem; object-fit: cover; margin-right: 10px;">
             </a>
 
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu aria-labelledby="userDropdown">
                 <li><a class="dropdown-item" *ngIf="userType === 'Admin'" routerLink="/adminDashboard">Admin Dashboard</a></li>
                 <li><a class="dropdown-item" *ngIf="userType === 'Customer'" routerLink="/customerDashboard">Customer Dashboard</a></li>
                 <li><a class="dropdown-item" routerLink="/profile">Go to Profile</a></li>
                 <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
             </ul>
         </div>
+
     </div>
 </nav>

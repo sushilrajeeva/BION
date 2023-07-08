@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.css';
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
 
 
 html, body { height: 100%; }
@@ -26,5 +28,33 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   .mat-select-value {
     color: #3f51b5;
   }
+  
+  .dropdown-menu.dropdown-menu-end {
+    color: black !important;
+    white-space: normal !important;
+    text-align: left !important;
+    min-width: 200px !important;
+}
+
+.dropdown-item {
+    color: black !important;
+}
+
+.dropdown-menu .dropdown-item {
+    padding: 0.25rem 2.0rem;  /* adjust values as needed */
+    box-sizing: border-box;
+    margin: auto !important;
+  }
+  
+  .dropdown-menu .dropdown-item:hover {
+    background-color: #f8f9fa;  /* adjust color as needed */
+    transform: scale(1); /* reset scaling */
+  }
+
+  .dropdown-item:hover {
+    transition: none !important;
+}
+
+  
   
 

@@ -4,15 +4,20 @@
     background-color: #333;
     height: 60px;
     align-items: center;
-  }
+}
   
-  .navbar a {
+.navbar a {
     color: #fff;
     text-decoration: none;
     margin: 0 10px;
-  }
-  
-  .navbar a:hover {
+}
+
+.navbar a:hover {
     color: #ddd;
-  }
-  
+}
+
+/* New Styles to fix the dropdown text color and prevent overflow */
+.navbar .dropdown-menu {
+    color: black;
+    white-space: normal;
+}

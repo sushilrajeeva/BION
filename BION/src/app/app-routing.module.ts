@@ -4,12 +4,14 @@ import { RegisterComponent } from './register/register.component';
 import { HomepageComponent } from './homepage/homepage.component'; // Import this
 import { LoginComponent } from './login/login.component';
 import { AboutBionComponent } from './about-bion/about-bion.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'aboutbion', component: AboutBionComponent },
+  { path: 'contact', component: ContactUsComponent },
   { path: '**', redirectTo: '' }, // Redirect all unknown paths to homepage
 ];
 

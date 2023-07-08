@@ -18,6 +18,13 @@ import { MatInputModule } from '@angular/material/input';
 import { LoginComponent } from './login/login.component';
 import { AboutBionComponent } from './about-bion/about-bion.component';
 
+// Import ng-bootstrap
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ContactUsComponent } from './contact-us/contact-us.component';
+
+//Importing fonts
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,6 +33,7 @@ import { AboutBionComponent } from './about-bion/about-bion.component';
     HomepageComponent,
     LoginComponent,
     AboutBionComponent,
+    ContactUsComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,6 +46,8 @@ import { AboutBionComponent } from './about-bion/about-bion.component';
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
+    NgbModule, // add it to the imports
+    FontAwesomeModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
