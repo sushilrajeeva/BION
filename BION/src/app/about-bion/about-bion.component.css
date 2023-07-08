@@ -1,0 +1,60 @@
+.container {
+    max-width: 800px;
+}
+
+h1 {
+    color: #fa9f42;
+}
+
+.about-card {
+    transition: transform .2s; /* Animation */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.about-card:hover {
+    transform: scale(1.02); 
+}
+
+.card-title {
+    color: #333;
+}
+
+.card-text, .card-text ul {
+    color: #666;
+    font-size: 1.1em;
+    line-height: 1.6em;
+}
+
+.highlight-item {
+    transition: background-color .3s ease, color .3s ease;
+    padding: 0.5em;
+    list-style-type: none;
+    cursor: pointer;
+    overflow: hidden;
+    max-height: 50px; /* Adjust as needed */
+    transition: max-height 0.2s ease-out;
+}
+
+.highlight-item.active {
+    max-height: 200px; /* Adjust as needed */
+}
+
+.highlight-item:hover {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.highlight-item b {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.highlight-item .expander {
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+}
+
+.highlight-item.active .expander {
+    transform: rotate(180deg);
+}

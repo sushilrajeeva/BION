@@ -16,6 +16,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { LoginComponent } from './login/login.component';
+import { AboutBionComponent } from './about-bion/about-bion.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { LoginComponent } from './login/login.component';
     NavbarComponent,
     HomepageComponent,
     LoginComponent,
+    AboutBionComponent,
   ],
   imports: [
     BrowserModule,

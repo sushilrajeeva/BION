@@ -1,0 +1,45 @@
+<div class="container py-5">
+    <h1 class="text-center mb-4">About Us</h1>
+    <div class="card about-card mb-4">
+        <div class="card-body">
+            <h2 class="card-title">Bion’s Philosophy</h2>
+            <p class="card-text">Our brand name 'BION' origin is Greek. Bion means "life" or "to revive". We are an organic skincare brand focusing on holistic wellness with exquisite herbs and concoctions used by ancient royals. Our minimal range and premium quality handcrafted products are designed to blend traditional ayurvedic formulations with green biochemistry. Active chemicals can sensitize but plant based actives don't. Its our conscious decision to put toxins on our skin or let nature do its magic.</p>
+        </div>
+    </div>
+    <div class="card about-card">
+        <div class="card-body">
+            <h2 class="card-title">Why Choose Bion Essentials?</h2>
+            <p class="card-text">Tiny amounts of chemicals can have a significant impact on our health and hormonal balance. Our skin absorbs 60% of what is applied to it and hence few chemicals when in contact travel directly to the bloodstream. Also, we accidentally ingest products through our mouths and inhale through our nostrils.</p>
+            <div class="highlight-item" (click)="expandItem('nontoxic')">
+                <b>NON-TOXIC <span class="expander">&#x25BC;</span></b>
+                <p *ngIf="expandedItem === 'nontoxic'" [@expandCollapse]="expandedItem === 'nontoxic' ? 'expanded' : 'collapsed'">
+                    Every ingredient used is extracted naturally to be devoid of any toxic substances. We offer clean and USDA certified organic ingredients to treat your skin.
+                </p>
+            </div>
+            <div class="highlight-item" (click)="expandItem('handcrafted')">
+                <b>HANDCRAFTED <span class="expander">&#x25BC;</span></b>
+                <p *ngIf="expandedItem === 'handcrafted'" [@expandCollapse]="expandedItem === 'handcrafted' ? 'expanded' : 'collapsed'">
+                    All the products are skillfully hand produced using high-quality ingredients in small batches to ensure freshness and retain sensory experience.
+                </p>
+            </div>
+            <div class="highlight-item" (click)="expandItem('environment')">
+                <b>ENVIRONMENT CONSCIENCE <span class="expander">&#x25BC;</span></b>
+                <p *ngIf="expandedItem === 'environment'" [@expandCollapse]="expandedItem === 'environment' ? 'expanded' : 'collapsed'">
+                    We are committed to reduce carbon footprint, all the raw materials are sourced in an environmentally and ethically responsible manner, that are biodegradable and packed in recyclable packaging.
+                </p>
+            </div>
+            <div class="highlight-item" (click)="expandItem('cruelty')">
+                <b>CRUELTY FREE <span class="expander">&#x25BC;</span></b>
+                <p *ngIf="expandedItem === 'cruelty'" [@expandCollapse]="expandedItem === 'cruelty' ? 'expanded' : 'collapsed'">
+                    We care, and contribute a portion of our revenue to animal rescuers and feeders. We are strictly against testing on animals.
+                </p>
+            </div>
+            <div class="highlight-item" (click)="expandItem('transparency')">
+                <b>TRANSPARENCY <span class="expander">&#x25BC;</span></b>
+                <p *ngIf="expandedItem === 'transparency'" [@expandCollapse]="expandedItem === 'transparency' ? 'expanded' : 'collapsed'">
+                    We follow a transparent ingredient listing policy so you know exactly what you are feeding your skin.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
