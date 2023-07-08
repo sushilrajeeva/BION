@@ -1,19 +1,47 @@
-<nav class="navbar">
-    <a routerLink="/">Homepage</a>
-    <a routerLink="/aboutbion">About BION</a>
-    <a routerLink="/services">Services</a>
-    <a routerLink="/contact">Contact Us</a>
-  
-    <!-- Show these links if a user is not logged in -->
-    <div *ngIf="!isLoggedIn">
-      <a routerLink="/login">Login</a>
-      <a routerLink="/register">Register</a>
-    </div>
-  
-    <!-- Show these links if a user is logged in -->
-    <div *ngIf="isLoggedIn">
-      <a *ngIf="userType === 'Admin'" routerLink="/adminDashboard">Admin Dashboard</a>
-      <a *ngIf="userType === 'Customer'" routerLink="/customerDashboard">Customer Dashboard</a>
-      <a (click)="logout()">Logout</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" routerLink="/">BION</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/">Homepage</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/aboutbion">About BION</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/services">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/contact">Contact Us</a>
+                </li>
+                <!-- Show these links if a user is not logged in -->
+                <li class="nav-item" *ngIf="!isLoggedIn">
+                    <a class="nav-link" routerLink="/login">Login</a>
+                </li>
+                <li class="nav-item" *ngIf="!isLoggedIn">
+                    <a class="nav-link" routerLink="/register">Register</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Show user profile dropdown if a user is logged in -->
+        <div class="dropdown" *ngIf="isLoggedIn">
+            <a class="dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="/logo.png" alt="User profile" class="rounded-circle" style="height: 2.5rem; width: 2.5rem; object-fit: cover; margin-right: 10px;">
+            </a>
+
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" *ngIf="userType === 'Admin'" routerLink="/adminDashboard">Admin Dashboard</a></li>
+                <li><a class="dropdown-item" *ngIf="userType === 'Customer'" routerLink="/customerDashboard">Customer Dashboard</a></li>
+                <li><a class="dropdown-item" routerLink="/profile">Go to Profile</a></li>
+                <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+            </ul>
+        </div>
     </div>
 </nav>

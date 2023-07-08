@@ -1,4 +1,23 @@
-<div class="homepage">
-    <h1>BION</h1>
+<!-- Hero section -->
+<div class="bg-primary text-white text-center py-5">
+    <h1 class="display-4">Welcome to BION</h1>
+    <p class="lead">Explore our range of organic skincare products</p>
+  </div>
+  
+  <!-- Product grid -->
+  <div class="container my-5">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+      <div class="col" *ngFor="let product of products">
+        <!-- Product card -->
+        <div class="card">
+          <img [src]="product.image" class="card-img-top" alt="Product image">
+          <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">{{ product.description }}</p>
+            <a href="#" class="btn btn-primary">View More</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   
