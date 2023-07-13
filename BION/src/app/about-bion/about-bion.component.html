@@ -6,40 +6,60 @@
             <p class="card-text">Our brand name 'BION' origin is Greek. Bion means "life" or "to revive". We are an organic skincare brand focusing on holistic wellness with exquisite herbs and concoctions used by ancient royals. Our minimal range and premium quality handcrafted products are designed to blend traditional ayurvedic formulations with green biochemistry. Active chemicals can sensitize but plant based actives don't. Its our conscious decision to put toxins on our skin or let nature do its magic.</p>
         </div>
     </div>
-    <div class="card about-card">
+    <div class="card about-card mb-4">
         <div class="card-body">
             <h2 class="card-title">Why Choose Bion Essentials?</h2>
             <p class="card-text">Tiny amounts of chemicals can have a significant impact on our health and hormonal balance. Our skin absorbs 60% of what is applied to it and hence few chemicals when in contact travel directly to the bloodstream. Also, we accidentally ingest products through our mouths and inhale through our nostrils.</p>
-            <div class="highlight-item" (click)="expandItem('nontoxic')">
-                <b>NON-TOXIC <span class="expander">&#x25BC;</span></b>
-                <p *ngIf="expandedItem === 'nontoxic'" [@expandCollapse]="expandedItem === 'nontoxic' ? 'expanded' : 'collapsed'">
-                    Every ingredient used is extracted naturally to be devoid of any toxic substances. We offer clean and USDA certified organic ingredients to treat your skin.
-                </p>
-            </div>
-            <div class="highlight-item" (click)="expandItem('handcrafted')">
-                <b>HANDCRAFTED <span class="expander">&#x25BC;</span></b>
-                <p *ngIf="expandedItem === 'handcrafted'" [@expandCollapse]="expandedItem === 'handcrafted' ? 'expanded' : 'collapsed'">
-                    All the products are skillfully hand produced using high-quality ingredients in small batches to ensure freshness and retain sensory experience.
-                </p>
-            </div>
-            <div class="highlight-item" (click)="expandItem('environment')">
-                <b>ENVIRONMENT CONSCIENCE <span class="expander">&#x25BC;</span></b>
-                <p *ngIf="expandedItem === 'environment'" [@expandCollapse]="expandedItem === 'environment' ? 'expanded' : 'collapsed'">
-                    We are committed to reduce carbon footprint, all the raw materials are sourced in an environmentally and ethically responsible manner, that are biodegradable and packed in recyclable packaging.
-                </p>
-            </div>
-            <div class="highlight-item" (click)="expandItem('cruelty')">
-                <b>CRUELTY FREE <span class="expander">&#x25BC;</span></b>
-                <p *ngIf="expandedItem === 'cruelty'" [@expandCollapse]="expandedItem === 'cruelty' ? 'expanded' : 'collapsed'">
-                    We care, and contribute a portion of our revenue to animal rescuers and feeders. We are strictly against testing on animals.
-                </p>
-            </div>
-            <div class="highlight-item" (click)="expandItem('transparency')">
-                <b>TRANSPARENCY <span class="expander">&#x25BC;</span></b>
-                <p *ngIf="expandedItem === 'transparency'" [@expandCollapse]="expandedItem === 'transparency' ? 'expanded' : 'collapsed'">
-                    We follow a transparent ingredient listing policy so you know exactly what you are feeding your skin.
-                </p>
-            </div>
+            <ul>
+                <li class="highlight-item"><b>NON-TOXIC:</b> Every ingredient used is extracted naturally to be devoid of any toxic substances. We offer clean and USDA certified organic ingredients to treat your skin.</li>
+                <li class="highlight-item"><b>HANDCRAFTED:</b> All the products are skillfully hand produced using high quality ingredients in small batches to ensure freshness and retain sensory experience.</li>
+                <li class="highlight-item"><b>ENVIRONMENT CONSCIENCE:</b> We are committed to reduce carbon footprint, all the raw materials are sourced in an environmentally and ethically responsible manner, that are biodegradable and packed in recyclable packaging.</li>
+                <li class="highlight-item"><b>CRUELTY FREE:</b> We care, and contribute a portion of our revenue to animal rescuers and feeders. We are strictly against testing on animals.</li>
+                <li class="highlight-item"><b>TRANSPARENCY:</b> We follow a transparent ingredient listing policy so you know exactly what you are feeding your skin.</li>
+            </ul>
         </div>
     </div>
+
+
+    <div class="card about-card mb-4">
+        <div class="card-body">
+            <h2 class="card-title">Our Policies</h2>
+            <ngb-accordion #acc="ngbAccordion" class="my-4 about-card mb-4">
+                <ngb-panel title="Store Policies">
+                  <ng-template ngbPanelContent>
+                    ORDER ISSUES
+        Bion Essentials values your patronage and will be happy to help in case you face any issue or
+        require assistance with any product. Since, all the products are hand crafted, prepared in
+        small batches, and withholding the natural essence of our products we do not accept returns
+        or exchanges. 
+        ​
+        In case the package arrives damaged (broken jars) please click pictures clearly of the
+        damaged product. Due to outsourced shipping vendors, we can only accept damaged products
+        with a proof to support it. Please write to us within 6 hours of shipment (with proof of
+        damage) at bion.essential@gmail.com.
+                  </ng-template>
+                </ngb-panel>
+        
+                <ngb-panel title="Refund Policy">
+                  <ng-template ngbPanelContent>
+                    Content of Panel 2
+                  </ng-template>
+                </ngb-panel>
+        
+                <ngb-panel title="Shipping Policy">
+                    <ng-template ngbPanelContent>
+                      Content of Panel 2
+                    </ng-template>
+                  </ngb-panel>
+        
+                  <ngb-panel title="Privacy Policies">
+                    <ng-template ngbPanelContent>
+                      Content of Panel 2
+                    </ng-template>
+                  </ngb-panel>
+              </ngb-accordion>
+        </div>
+    </div>
+      
+      
 </div>

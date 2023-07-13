@@ -21,6 +21,7 @@ import { AboutBionComponent } from './about-bion/about-bion.component';
 // Import ng-bootstrap
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContactUsComponent } from './contact-us/contact-us.component';
+import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 
 //Importing fonts
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -48,6 +49,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MatInputModule,
     NgbModule, // add it to the imports
     FontAwesomeModule,
+    NgbAccordionModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
