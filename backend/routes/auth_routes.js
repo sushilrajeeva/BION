@@ -44,6 +44,8 @@ router.route("/register").post(async (req, res) => {
     let pinCode = xss(req.body.pinCode);
     let country = xss(req.body.country);
     let password = xss(req.body.password);
+    let securityQuestion = xss(req.body.securityQuestion);
+    let securityAnswer = xss(req.body.securityAnswer);
 
     console.log("Sanitized inputs -> ", {
       name: name,
@@ -56,6 +58,8 @@ router.route("/register").post(async (req, res) => {
       pinCode: pinCode,
       country: country,
       password: password,
+      securityQuestion: securityQuestion,
+      securityAnswer: securityAnswer,
     });
 
     // Consider not returning the entire user object for privacy/security
@@ -70,7 +74,9 @@ router.route("/register").post(async (req, res) => {
       state,
       pinCode,
       country,
-      password
+      password,
+      securityQuestion,
+      securityAnswer
     );
 
     if (createdCustomer.insertedUser === true) {
@@ -126,7 +132,10 @@ router.route("/admin/login").post(async (req, res) => {
 
     console.log("Ok Admin is logged in!!");
 
-    return res.status(200).json({ sessionUser: req.session.user });
+    return res.status(200).json({
+      successMsg: "Admin is logged in successfully!",
+      sessionUser: req.session.user,
+    });
   } catch (error) {
     return res.status(404).json({ Error: error });
   }
@@ -167,7 +176,10 @@ router.route("/customer/login").post(async (req, res) => {
 
     console.log("Ok customer is logged in!!");
 
-    return res.status(200).json({ sessionUser: req.session.user });
+    return res.status(200).json({
+      successMsg: "Customer is logged in successfully!",
+      sessionUser: req.session.user,
+    });
   } catch (error) {
     return res.status(404).json({ Error: error });
   }

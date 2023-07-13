@@ -20,6 +20,8 @@ const userSchema = Joi.object({
   pinCode: Joi.string().required(),
   country: Joi.string().required(),
   password: Joi.string().required(),
+  securityQuestion: Joi.string().required(),
+  securityAnswer: Joi.string().required(),
 });
 
 export const createCustomer = async (
@@ -32,7 +34,9 @@ export const createCustomer = async (
   state,
   pinCode,
   country,
-  password
+  password,
+  securityQuestion,
+  securityAnswer
 ) => {
   console.log("Create Customer Function Model is called!");
 
@@ -48,6 +52,8 @@ export const createCustomer = async (
       pinCode: pinCode,
       country: country,
       password: password,
+      securityQuestion: securityQuestion,
+      securityAnswer: securityAnswer,
     };
 
     // Validate the data
@@ -79,6 +85,8 @@ export const createCustomer = async (
       pinCode: custData.pinCode,
       country: custData.country,
       password: hashedPassword,
+      securityQuestion: custData.securityQuestion,
+      securityAnswer: custData.securityAnswer,
     };
 
     const insertInfo = await custCol.insertOne(custUserData);

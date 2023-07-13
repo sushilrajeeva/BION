@@ -25,6 +25,7 @@ import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 
 //Importing fonts
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     LoginComponent,
     AboutBionComponent,
     ContactUsComponent,
+    ForgotPasswordComponent,
   ],
   imports: [
     BrowserModule,

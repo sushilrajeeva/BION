@@ -56,8 +56,9 @@ export class LoginComponent implements OnInit {
         )
         .subscribe(
           (response) => {
+            console.log('Resonpse msg -> ', response);
             this.snackBar
-              .open('Logged in successfully!', 'close', {
+              .open(response.successMsg, 'close', {
                 duration: 3000,
               })
               .afterDismissed()
@@ -71,6 +72,7 @@ export class LoginComponent implements OnInit {
                   response.sessionUser.userType
                 );
                 console.log(localStorage.getItem('sessionUser'));
+
                 this.router.navigate(['/homepage']); // Replace '/home' with the actual path to your homepage component
               });
             // here, you can redirect to another page or do other things

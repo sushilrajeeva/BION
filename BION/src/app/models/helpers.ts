@@ -1,6 +1,21 @@
 const exportedMethods = {
   description: 'This is my helper function',
 
+  getCountryList() {
+    let countryList = [];
+    for (let i = 0; i < this.countryCodes.length; i++) {
+      countryList.push(this.titleCase(this.countryCodes[i].name));
+    }
+    //console.log("CountryList, ", countryList);
+    return countryList;
+  },
+
+  titleCase(str: string): string {
+    return str.toLowerCase().replace(/(?:^|\s)\w/g, (match: string) => {
+      return match.toUpperCase();
+    });
+  },
+
   countryCodes: [
     {
       name: 'Afghanistan',

@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import {
+  FormBuilder,
+  Validators,
+  FormControl,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -14,20 +20,30 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
   registerForm = this.formBuilder.group({
-    name: ['', Validators.required],
+    name: ['', [Validators.required, this.nameValidator]],
     emailAddress: ['', [Validators.required, Validators.email]],
     countryCode: new FormControl('+91'), // set '+91' as default value
-    phoneNumber: ['', Validators.required],
-    address: ['', Validators.required],
-    city: ['', Validators.required],
-    state: ['', Validators.required],
-    pinCode: ['', Validators.required],
-    country: ['', Validators.required],
-    password: ['', Validators.required],
+    phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+    address: ['', [Validators.required, this.addressValidator]],
+    city: ['', [Validators.required, this.cityStateValidator]],
+    state: ['', [Validators.required, this.cityStateValidator]],
+    pinCode: ['', [Validators.required, Validators.pattern(/^\d{5,6}$/)]],
+    country: ['', [Validators.required, this.countryValidator.bind(this)]],
+    password: ['', [Validators.required, this.passwordValidator]],
+    securityQuestion: ['', Validators.required],
+    securityAnswer: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(2),
+        this.alphaNumericValidator,
+      ],
+    ],
   });
 
   countryCodes = helpers.countryCodes;
   filteredCountryCodes: Observable<any[]> = of([]);
+  countryList = helpers.getCountryList();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,7 +52,143 @@ export class RegisterComponent implements OnInit {
     private router: Router
   ) {}
 
+  alphaNumericValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (typeof value !== 'string') {
+      return { alphaNumericValidator: true };
+    }
+
+    const trimmed = value.trim();
+
+    if (trimmed.length < 2) {
+      return { alphaNumericValidator: true };
+    }
+
+    if (!/^[a-z0-9 .]+$/i.test(trimmed)) {
+      return { alphaNumericValidator: true };
+    }
+
+    return null;
+  }
+
+  nameValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (typeof value !== 'string') {
+      return { nameValidator: true };
+    }
+
+    const trimmed = value.trim();
+
+    if (trimmed.length < 2) {
+      return { nameValidator: true };
+    }
+
+    if (!/^[a-z0-9 .]+$/i.test(trimmed)) {
+      return { nameValidator: true };
+    }
+
+    return null;
+  }
+
+  addressValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+
+    if (typeof value !== 'string') {
+      return { addressValidator: true };
+    }
+
+    const trimmed = value.trim();
+
+    if (trimmed.length < 2) {
+      return { addressValidator: true };
+    }
+
+    if (!/^[\w\d\s.,-]+$/i.test(trimmed)) {
+      return { addressValidator: true };
+    }
+
+    return null;
+  }
+
+  cityStateValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (typeof value !== 'string') {
+      return { cityStateValidator: true };
+    }
+
+    const trimmed = value.trim();
+
+    if (trimmed.length < 2) {
+      return { cityStateValidator: true };
+    }
+
+    if (!/^[A-Za-z ]{2,}$/.test(trimmed)) {
+      return { cityStateValidator: true };
+    }
+
+    return null;
+  }
+
+  countryValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (typeof value !== 'string') {
+      return { countryValidator: true };
+    }
+
+    const trimmed = helpers.titleCase(value.trim());
+
+    if (trimmed.length < 2) {
+      return { countryValidator: true };
+    }
+
+    if (!this.countryList.includes(trimmed)) {
+      return { countryValidator: true };
+    }
+
+    return null;
+  }
+
+  passwordValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (typeof value !== 'string') {
+      return { passwordValidator: true };
+    }
+
+    const trimmed = value.trim();
+
+    if (trimmed.length < 8) {
+      return { passwordValidator: true };
+    }
+
+    if (/\s/.test(trimmed)) {
+      return { passwordValidator: true };
+    }
+
+    if (!/[A-Z]/.test(trimmed)) {
+      return { passwordValidator: true };
+    }
+
+    if (!/[0-9]/.test(trimmed)) {
+      return { passwordValidator: true };
+    }
+
+    if (!/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(trimmed)) {
+      return { passwordValidator: true };
+    }
+
+    return null;
+  }
+
   ngOnInit(): void {
+    // console.log('Country list is ');
+    // console.log('Country List');
+    // if (this.countryList.includes('India')) {
+    //   console.log({ countryValidator: true });
+    // }
+    // this.countryList.forEach((ele) => {
+    //   console.log(ele);
+    // });
+
     const countryCodeControl = this.registerForm.get('countryCode');
     if (countryCodeControl) {
       this.filteredCountryCodes = countryCodeControl.valueChanges.pipe(
@@ -83,6 +235,8 @@ export class RegisterComponent implements OnInit {
     }
 
     this.registerForm.patchValue({ countryCode: countryCode });
+
+    //console.log('Submitted -> ', this.registerForm.value);
 
     this.authService.register(this.registerForm.value).subscribe({
       next: (response) =>

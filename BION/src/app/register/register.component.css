@@ -72,6 +72,12 @@
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
     transform: translateY(4px); /* Moves button down to simulate press */
   }
+
+  .register-button:disabled {
+    background-color: #ccc; /* You can change this to your preferred disabled color */
+    cursor: not-allowed;
+}
+
   
   
   

@@ -7,11 +7,17 @@
               <div class="form-floating mb-3">
                 <input type="text" formControlName="name" class="form-control" id="name" placeholder="Name" required>
                 <label for="name">Name</label>
+                <div *ngIf="registerForm.controls.name.invalid && registerForm.controls.name.touched" class="text-danger">
+                  Name is required, and can't be empty spaces!
+                </div>
               </div>
   
               <div class="form-floating mb-3">
                 <input type="email" formControlName="emailAddress" class="form-control" id="emailAddress" placeholder="Email Address" required>
                 <label for="emailAddress">Email Address</label>
+                <div *ngIf="registerForm.controls.emailAddress.invalid && registerForm.controls.emailAddress.touched" class="text-danger">
+                  Valid Email Address is required, and can't be empty spaces!
+                </div>
               </div>
   
               <mat-form-field appearance="fill" class="register-form-field form-floating mb-3">
@@ -27,40 +33,86 @@
               <div class="form-floating mb-3">
                 <input type="tel" formControlName="phoneNumber" class="form-control" id="phoneNumber" placeholder="Phone Number" required>
                 <label for="phoneNumber">Phone Number</label>
+                <div *ngIf="registerForm.controls.phoneNumber.invalid && registerForm.controls.phoneNumber.touched" class="text-danger">
+                  Phone number is required and should be a 10 digit number!
+                </div>
               </div>
+              
   
               <div class="form-floating mb-3">
                 <input type="text" formControlName="address" class="form-control" id="address" placeholder="Address" required>
                 <label for="address">Address</label>
+                <div *ngIf="registerForm.controls.address.invalid && registerForm.controls.address.touched" class="text-danger">
+                  Address is required, and can't be empty spaces!
+                </div>
               </div>
   
               <div class="form-floating mb-3">
                 <input type="text" formControlName="city" class="form-control" id="city" placeholder="City" required>
                 <label for="city">City</label>
+                <div *ngIf="registerForm.controls.city.invalid && registerForm.controls.city.touched" class="text-danger">
+                  City is required, and can't be empty spaces!
+                </div>
               </div>
   
               <div class="form-floating mb-3">
                 <input type="text" formControlName="state" class="form-control" id="state" placeholder="State" required>
                 <label for="state">State</label>
+                <div *ngIf="registerForm.controls.state.invalid && registerForm.controls.state.touched" class="text-danger">
+                  State is required, and can't be empty spaces!
+                </div>
               </div>
   
               <div class="form-floating mb-3">
                 <input type="text" formControlName="pinCode" class="form-control" id="pinCode" placeholder="Pin Code" required>
                 <label for="pinCode">Pin Code</label>
+                <div *ngIf="registerForm.controls.pinCode.invalid && registerForm.controls.pinCode.touched" class="text-danger">
+                  Pincode is required, and can't be empty spaces. Should be 5 digits!
+                </div>
               </div>
   
               <div class="form-floating mb-3">
                 <input type="text" formControlName="country" class="form-control" id="country" placeholder="Country" required>
                 <label for="country">Country</label>
+                <div *ngIf="registerForm.controls.country.invalid && registerForm.controls.country.touched" class="text-danger">
+                  country is required, and can't be empty spaces!
+                </div>
               </div>
   
               <div class="form-floating mb-3">
                 <input type="password" formControlName="password" class="form-control" id="password" placeholder="Password" required>
                 <label for="password">Password</label>
+                <div *ngIf="registerForm.controls.password.invalid && registerForm.controls.password.touched" class="text-danger">
+                  Password is required and should be minimum 8 characters long, contain at least one uppercase letter, one number, one special character and no spaces.
+                </div>                
+              </div>
+
+              <div class="form-floating mb-3">
+                <select formControlName="securityQuestion" class="form-control" id="securityQuestion" required>
+                  <option value="" disabled selected>Select a Security Question</option>
+                  <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+                  <option value="Which year were you born?">Which year were you born?</option>
+                  <option value="Which city were you born?">Which city were you born?</option>
+                  <option value="Who is your favorite athlete?">Who is your favorite athlete?</option>
+                  <option value="What is your spouses name?">What is your spouses name?</option>
+                  <option value="When did you graduate?">When did you graduate?</option>
+                </select>
+                <label for="securityQuestion">Security Question</label>
+                <div *ngIf="registerForm.controls.securityQuestion.invalid && (registerForm.controls.securityQuestion.dirty || registerForm.controls.securityQuestion.touched)" class="text-danger">
+                  Security Question is required.
+                </div>
+              </div>
+              
+              <div class="form-floating mb-3">
+                <input type="text" formControlName="securityAnswer" class="form-control" id="securityAnswer" placeholder="Security Answer" required>
+                <label for="securityAnswer">Security Answer</label>
+                <div *ngIf="registerForm.controls.securityAnswer.invalid && (registerForm.controls.securityAnswer.dirty || registerForm.controls.securityAnswer.touched)" class="text-danger">
+                  Security Answer is required and must be at least 2 characters long.
+                </div>
               </div>
   
               <div class="center">
-                <button type="submit" class="register-button">
+                <button type="submit" [disabled]="registerForm.invalid" class="register-button">
                   Register
                 </button>
               </div>
