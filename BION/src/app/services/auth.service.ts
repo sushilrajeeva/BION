@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -20,5 +21,27 @@ export class AuthService {
     const body = { emailAddress: email, password: password };
     const url = admin ? this.adminLoginUrl : this.customerLoginUrl;
     return this.http.post<any>(url, body);
+  }
+
+  forgotPassword(
+    email: string,
+    securityQuestion: string,
+    securityAnswer: string,
+    newPassword: string
+  ): Observable<any> {
+    const body = {
+      emailAddress: email,
+      securityQuestion: securityQuestion,
+      securityAnswer: securityAnswer,
+      newPassword: newPassword,
+    };
+    const url = 'http://localhost:3000/customer/forgotPassword';
+    return this.http.post<any>(url, body).pipe(
+      catchError((error) => {
+        console.log('logging error', error.error.Error);
+
+        throw new Error(error.error.Error); // Throw the error with the error message
+      })
+    );
   }
 }

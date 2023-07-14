@@ -198,4 +198,52 @@ router.route("/logout").get((req, res) => {
   });
 });
 
+router.route("/customer/forgotPassword").post(async (req, res) => {
+  console.log("Customer Forgot Password route is called");
+  try {
+    let emailAddress = xss(req.body.emailAddress);
+    let securityQuestion = xss(req.body.securityQuestion);
+    let securityAnswer = xss(req.body.securityAnswer);
+    let newPassword = xss(req.body.newPassword);
+
+    console.log("Sanitized values = ", {
+      emailAddress: emailAddress,
+      securityQuestion: securityQuestion,
+      securityAnswer: securityAnswer,
+      newPassword: newPassword,
+    });
+
+    emailAddress = helpers.checkEmptyInputString(emailAddress, "Email Address");
+    emailAddress = emailAddress.toLowerCase();
+    securityQuestion = helpers.checkEmptyInputString(
+      securityQuestion,
+      "Security Question"
+    );
+    securityAnswer = helpers.checkEmptyInputString(
+      securityAnswer,
+      "Security Answer"
+    );
+    newPassword = helpers.checkEmptyInputString(newPassword, "Password");
+
+    helpers.checkValidEmail(emailAddress);
+    helpers.checkValidPassword(newPassword);
+
+    const reset = await customer.forgotPassword(
+      emailAddress,
+      securityQuestion,
+      securityAnswer,
+      newPassword
+    );
+
+    return res.status(200).json({
+      successMsg: "Customer Password reset is successfull!",
+      sessionUser: req.session.user,
+    });
+  } catch (error) {
+    console.log("Error is induced!!");
+    console.log(error);
+    return res.status(404).json({ Error: error });
+  }
+});
+
 export default router;

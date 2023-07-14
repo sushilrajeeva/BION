@@ -57,6 +57,7 @@ const exportedMethods = {
     //took reference from https://www.w3resource.com/javascript/form/email-validation.php#:~:text=To%20get%20a%20valid%20email,%5D%2B)*%24%2F.
     const emailRegEx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const isValid = emailRegEx.test(email);
+    console.log("Chevk email id is called!!!", isValid);
 
     if (!isValid) {
       throw `${email} is not of a valid email format! please make sure you have provided a valid email address format like -> example@example.com`;

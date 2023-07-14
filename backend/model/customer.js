@@ -159,4 +159,83 @@ export const checkCustomer = async (emailAddress, password) => {
   }
 };
 
-export default { createCustomer, getCustomer, checkCustomer };
+export const forgotPassword = async (
+  emailAddress,
+  securityQuestion,
+  securityAnswer,
+  newPassword
+) => {
+  try {
+    console.log("forgot password customer model is called!");
+
+    emailAddress = helpers.checkEmptyInputString(emailAddress, "Email Address");
+    emailAddress = emailAddress.toLowerCase();
+    securityQuestion = helpers.checkEmptyInputString(
+      securityQuestion,
+      "Security Question"
+    );
+    securityAnswer = helpers.checkEmptyInputString(
+      securityAnswer,
+      "Security Answer"
+    );
+    newPassword = helpers.checkEmptyInputString(newPassword, "Password");
+
+    helpers.checkValidEmail(emailAddress);
+    helpers.checkValidPassword(newPassword);
+
+    const usersCollection = await customerCollection();
+    const user = await usersCollection.findOne({ emailAddress });
+
+    if (!user) {
+      throw `The email address ${emailAddress} you entered doesn't exist`;
+    }
+
+    let compareToMatch = await bcrypt.compare(newPassword, user.password);
+
+    if (compareToMatch) {
+      throw `can't use your old password to reset`;
+    }
+
+    if (user.securityQuestion !== securityQuestion) {
+      throw `Security Question or Answer is incorrect`;
+    }
+
+    if (user.securityAnswer !== securityAnswer) {
+      throw `Security Question or Answer is incorrect`;
+    }
+
+    resetPassword(emailAddress, newPassword);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const resetPassword = async (emailAddress, newPassword) => {
+  try {
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+    const custCol = await customerCollection();
+
+    const result = await custCol.updateOne(
+      { emailAddress: emailAddress },
+      { $set: { password: hashedPassword } }
+    );
+
+    if (result.modifiedCount === 0) {
+      throw new Error(
+        "Password reset failed. No matching customer found for the given email address."
+      );
+    }
+
+    return true;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export default {
+  createCustomer,
+  getCustomer,
+  checkCustomer,
+  resetPassword,
+  forgotPassword,
+};
