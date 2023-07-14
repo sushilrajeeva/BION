@@ -5,10 +5,20 @@ import cors from "cors"; // Add this
 import { dbConnection, closeConnection } from "./config/mongoConnection.js";
 import routes from "./routes/index.js";
 
+//For reading .env files
+import dotenv from "dotenv";
+dotenv.config({ path: "./properties.env" });
+
 const app = express();
 
 // Enable All CORS Requests
-app.use(cors()); // Add this
+//app.use(cors()); // Add this
+app.use(
+  cors({
+    origin: "http://localhost:4200", // only for Angular application running on port 4200
+    credentials: true,
+  })
+);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -19,6 +29,7 @@ app.use(
     secret: "some secret string!",
     resave: false,
     saveUninitialized: false,
+    cookie: { maxAge: 60 * 60 * 1000 }, // Expires after 1 hour for req.session.user
   })
 );
 

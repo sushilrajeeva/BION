@@ -9,6 +9,13 @@ import admin from "../model/admin.js";
 import customer from "../model/customer.js";
 import helpers from "../helpers.js";
 
+import auth from "../middleware/auth.js";
+
+import jwt from "jsonwebtoken";
+
+import middlewareMethods from "../middleware/middleware.js";
+import blackListedToken from "../model/blackListedToken.js";
+
 router.route("/").get(async (req, res) => {
   //code here for GET THIS ROUTE SHOULD NEVER FIRE BECAUSE OF MIDDLEWARE #1 IN SPECS.
 
@@ -97,6 +104,7 @@ router.route("/register").post(async (req, res) => {
   }
 });
 
+//Admin Login
 router.route("/admin/login").post(async (req, res) => {
   console.log("Admin login route is called");
   try {
@@ -116,17 +124,28 @@ router.route("/admin/login").post(async (req, res) => {
 
     const loginUser = await admin.checkAdmin(emailAddress, password);
 
+    let payload = {
+      id: loginUser._id,
+      userType: "Admin",
+    };
+
+    console.log("checking env -> ", process.env.JWT_SECRET_KEY);
+
+    let jwtToken = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+      expiresIn: "1h",
+    });
+
     req.session.user = {
       _id: xss(loginUser._id.toString()),
       name: xss(loginUser.name),
       emailAddress: xss(loginUser.emailAddress),
-      countryCode: xss(loginUser.countryCode),
-      phoneNumber: xss(loginUser.phoneNumber),
-      address: xss(loginUser.address),
-      city: xss(loginUser.city),
-      state: xss(loginUser.state),
-      pinCode: xss(loginUser.pinCode),
-      country: xss(loginUser.country),
+      // countryCode: xss(loginUser.countryCode),
+      // phoneNumber: xss(loginUser.phoneNumber),
+      // address: xss(loginUser.address),
+      // city: xss(loginUser.city),
+      // state: xss(loginUser.state),
+      // pinCode: xss(loginUser.pinCode),
+      // country: xss(loginUser.country),
       userType: xss("Admin"),
     };
 
@@ -134,13 +153,15 @@ router.route("/admin/login").post(async (req, res) => {
 
     return res.status(200).json({
       successMsg: "Admin is logged in successfully!",
-      sessionUser: req.session.user,
+      sessionUser: xss(req.session.user),
+      token: xss(jwtToken),
     });
   } catch (error) {
     return res.status(404).json({ Error: error });
   }
 });
 
+//Customer Login
 router.route("/customer/login").post(async (req, res) => {
   console.log("Customer login route is called");
   try {
@@ -160,17 +181,28 @@ router.route("/customer/login").post(async (req, res) => {
 
     const loginUser = await customer.checkCustomer(emailAddress, password);
 
+    let payload = {
+      id: loginUser._id,
+      userType: "Customer",
+    };
+
+    console.log("checking env -> ", process.env.JWT_SECRET_KEY);
+
+    let jwtToken = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+      expiresIn: "1h",
+    });
+
     req.session.user = {
       _id: xss(loginUser._id.toString()),
       name: xss(loginUser.name),
       emailAddress: xss(loginUser.emailAddress),
-      countryCode: xss(loginUser.countryCode),
-      phoneNumber: xss(loginUser.phoneNumber),
-      address: xss(loginUser.address),
-      city: xss(loginUser.city),
-      state: xss(loginUser.state),
-      pinCode: xss(loginUser.pinCode),
-      country: xss(loginUser.country),
+      // countryCode: xss(loginUser.countryCode),
+      // phoneNumber: xss(loginUser.phoneNumber),
+      // address: xss(loginUser.address),
+      // city: xss(loginUser.city),
+      // state: xss(loginUser.state),
+      // pinCode: xss(loginUser.pinCode),
+      // country: xss(loginUser.country),
       userType: xss("Customer"),
     };
 
@@ -178,24 +210,48 @@ router.route("/customer/login").post(async (req, res) => {
 
     return res.status(200).json({
       successMsg: "Customer is logged in successfully!",
-      sessionUser: req.session.user,
+      sessionUser: xss(req.session.user),
+      token: xss(jwtToken),
     });
   } catch (error) {
+    console.log("Error ->", error);
     return res.status(404).json({ Error: error });
   }
 });
 
-router.route("/logout").get((req, res) => {
+//Logout
+
+router.route("/logout").get(auth, async (req, res) => {
   console.log("Logout route is called!!");
-  req.session.destroy((err) => {
-    if (err) {
-      console.log("Error : Failed to destroy the session during logout.", err);
-      res.status(500).json({ error: "Internal error during logout" });
-    } else {
-      req.session = null;
-      res.status(200).json({ message: "Logged out successfully!" });
-    }
-  });
+
+  // Get token from headers (assuming token is passed in the Authorization header as a Bearer token)
+  const token = req.headers.authorization.split(" ")[1];
+  const expiry = req.session.cookie.expires; // The token expiry time that you've stored in the session
+
+  console.log("Token -> ", token);
+  console.log(("expiery -> ", expiry));
+
+  try {
+    // Blacklist the token
+    await blackListedToken.createBlackListedToken(token, expiry);
+
+    // Destroy the session
+    req.session.destroy((err) => {
+      if (err) {
+        console.log(
+          "Error : Failed to destroy the session during logout.",
+          err
+        );
+        res.status(500).json({ error: "Internal error during logout" });
+      } else {
+        req.session = null;
+        res.status(200).json({ message: "Logged out successfully!" });
+      }
+    });
+  } catch (error) {
+    console.log("Error : Failed to blacklist the token during logout.", error);
+    res.status(500).json({ error: "Internal error during logout" });
+  }
 });
 
 router.route("/customer/forgotPassword").post(async (req, res) => {
@@ -245,5 +301,29 @@ router.route("/customer/forgotPassword").post(async (req, res) => {
     return res.status(404).json({ Error: error });
   }
 });
+
+router.get("/protected", auth, (req, res) => {
+  console.log("Protected works!!");
+  console.log(req.user); // To print out the req.user object set in your auth middleware
+  return res.send(`Protected route!!! Hello, user ${req.user.id}`);
+});
+
+router.get("/someAdminRoute", auth, middlewareMethods.adminOnly, (req, res) => {
+  // Your route handler logic here.
+
+  console.log("Admin route accessed");
+  return res.send("Admin route accessed!!");
+});
+
+router.get(
+  "/someCustomerRoute",
+  auth,
+  middlewareMethods.customerOnly,
+  (req, res) => {
+    // Your route handler logic here.
+    console.log("Customer route accessed");
+    return res.send("Customer route accessed!!");
+  }
+);
 
 export default router;

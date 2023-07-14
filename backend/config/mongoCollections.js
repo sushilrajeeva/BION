@@ -18,3 +18,4 @@ const getCollectionFn = (collection) => {
 // List your collections here
 export const adminCollection = getCollectionFn("admin");
 export const customerCollection = getCollectionFn("customer");
+export const blackListedTokenCollection = getCollectionFn("BlacklistedToken");
