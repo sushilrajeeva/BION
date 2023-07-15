@@ -56,22 +56,24 @@ export class LoginComponent implements OnInit {
         )
         .subscribe(
           (response) => {
-            console.log('Resonpse msg -> ', response);
+            console.log('Response msg -> ', response);
+            const token = response.body.token; // Get the JWT token from the response
+            const successMsg = response.body.successMsg;
+            const sessionUser = response.body.sessionUser;
+            sessionStorage.setItem('token', token); // Save the JWT token to sessionStorage
+
+            sessionStorage.setItem('sessionUser', JSON.stringify(sessionUser)); // Save the sessionUser to sessionStorage
+
             this.snackBar
-              .open(response.successMsg, 'close', {
+              .open(successMsg, 'close', {
                 duration: 3000,
               })
               .afterDismissed()
               .subscribe(() => {
-                localStorage.setItem(
-                  'sessionUser',
-                  JSON.stringify(response.sessionUser)
-                );
                 this.loginStatusService.changeLoginStatus(true);
-                this.loginStatusService.changeUserType(
-                  response.sessionUser.userType
-                );
-                console.log(localStorage.getItem('sessionUser'));
+                this.loginStatusService.changeUserType(sessionUser.userType);
+                console.log(sessionStorage.getItem('sessionUser'));
+                console.log(sessionStorage.getItem('token'));
 
                 this.router.navigate(['/homepage']); // Replace '/home' with the actual path to your homepage component
               });

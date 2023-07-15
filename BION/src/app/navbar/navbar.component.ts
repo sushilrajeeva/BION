@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { LoginStatusService } from '../services/LoginStatusService';
 
@@ -30,18 +30,28 @@ export class NavbarComponent implements OnInit {
   }
 
   updateSessionUser(): void {
-    const storedUser = localStorage.getItem('sessionUser');
+    const storedUser = sessionStorage.getItem('sessionUser');
     this.sessionUser = storedUser ? JSON.parse(storedUser) : null;
     this.isLoggedIn = !!this.sessionUser;
     this.userType = this.sessionUser ? this.sessionUser.userType : '';
   }
 
   logout(): void {
-    localStorage.removeItem('sessionUser');
+    const token = sessionStorage.getItem('token');
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      }),
+    };
+
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('sessionUser');
     this.sessionUser = null;
     this.loginStatusService.changeLoginStatus(false);
     this.loginStatusService.changeUserType('');
-    this.http.get('http://localhost:3000/logout').subscribe(
+
+    this.http.get('http://localhost:3000/logout', httpOptions).subscribe(
       (response) => {
         console.log('Logout successful.');
         this.router.navigate(['/']); // navigate to homepage after logout

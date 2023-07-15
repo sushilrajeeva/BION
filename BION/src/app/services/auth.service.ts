@@ -20,7 +20,7 @@ export class AuthService {
   login(email: string, password: string, admin: boolean): Observable<any> {
     const body = { emailAddress: email, password: password };
     const url = admin ? this.adminLoginUrl : this.customerLoginUrl;
-    return this.http.post<any>(url, body);
+    return this.http.post<any>(url, body, { observe: 'response' }); // observe response to get all response data including headers
   }
 
   forgotPassword(
