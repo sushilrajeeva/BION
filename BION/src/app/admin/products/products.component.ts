@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { AdminService } from 'src/app/services/admin.service';
 
 @Component({
   selector: 'app-products',
@@ -7,61 +9,42 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
   styleUrls: ['./products.component.css'],
 })
 export class ProductsComponent implements OnInit {
-  productForm!: FormGroup;
-  showForm = false;
-  categories = [
-    'Face wash',
-    'Face Mist/ Toner',
-    'Face Serum',
-    'Gel/Moisturizer',
-    'Lip Scrub',
-    'Lip Shield',
+  displayedColumns: string[] = [
+    'image',
+    'productName',
+    'productSellPrice',
+    'productInventoryStatus',
+    'productStockCount',
   ];
+  products!: MatTableDataSource<any>;
+  public productsArray: any[] = [];
 
-  constructor(private formBuilder: FormBuilder) {}
+  @ViewChild(MatSort) sort!: MatSort;
+
+  constructor(private adminService: AdminService) {}
 
   ngOnInit(): void {
-    this.productForm = this.formBuilder.group({
-      productName: ['', Validators.required],
-      productRibbon: ['', Validators.required],
-      productDescription: [
-        '',
-        [Validators.required, Validators.maxLength(500)],
-      ],
-      additionalInfo: this.formBuilder.array([]),
-      pricing: ['', [Validators.required, Validators.min(1)]],
-      category: ['', Validators.required],
-      file: ['', Validators.required],
-    });
+    this.adminService.getAllProducts().subscribe(
+      (data: any[]) => {
+        this.productsArray = [...data]; // Save the product data to the array
+        this.products = new MatTableDataSource(data);
+        this.products.sort = this.sort;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
-  openProductForm() {
-    this.showForm = true;
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.products.filter = filterValue.trim().toLowerCase();
   }
 
-  closeProductForm() {
-    this.showForm = false;
-  }
-
-  onSubmit() {
-    console.log(this.productForm.value);
-    this.productForm.reset();
-    this.showForm = false;
-  }
-
-  get additionalInfo() {
-    return this.productForm.get('additionalInfo') as FormArray;
-  }
-
-  addAdditionalInfo() {
-    const infoGroup = this.formBuilder.group({
-      infoHeading: ['', Validators.required],
-      information: ['', [Validators.required, Validators.maxLength(500)]],
-    });
-    this.additionalInfo.push(infoGroup);
-  }
-
-  removeAdditionalInfo(index: number) {
-    this.additionalInfo.removeAt(index);
+  logProductName(productName: string) {
+    const product = this.productsArray.find(
+      (prod) => prod.productName === productName
+    );
+    console.log(product);
   }
 }

@@ -1,21 +1,66 @@
-.card {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 600px;
-    z-index: 10;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  }
-  
-  .close {
-    position: absolute;
-    right: 15px;
-    top: 10px;
+.my-filter {
+    border-radius: 25px;
     border: none;
-    background: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-  }
-  
+    padding: 10px 20px;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    margin: auto;
+}
+
+.table-responsive {
+    width: 80%;
+    margin: auto;
+}
+
+table.table {
+    transition: all 0.3s;
+    width: 100%;
+}
+
+::ng-deep .mat-row {
+    transition: background-color 0.3s ease; 
+}
+
+::ng-deep .mat-row:hover {
+    background-color: lightskyblue !important;
+    border: 1px solid darkblue !important;
+}
+
+table.table img {
+    border-radius: 50%; /* Makes the images circular */
+}
+
+/* Colored badges for different inventory statuses */
+.badge {
+    border-radius: 15px;
+    color: white;
+    padding: 5px 10px;
+}
+
+.badge-in-stock {
+    background-color: darkgreen;
+}
+
+.badge-pre-order {
+    background-color: orange;
+}
+
+.badge-out-of-stock {
+    background-color: lightcoral;
+}
+
+::ng-deep .mat-sort-header-arrow .mat-sort-header-indicator {
+    color: purple !important;
+}
+
+::ng-deep .mat-cell.centered-cell {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+::ng-deep .mat-header-cell {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}

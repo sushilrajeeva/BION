@@ -351,14 +351,16 @@ router
       productInventoryStatus: xss(req.body.productInventoryStatus),
       productWeight: req.body.productWeight,
       productStockCount: req.body.productStockCount,
+      imageURL: xss(req.body.imageURL),
     };
 
-    const { error, value } = productSchema.validate(prod);
-
     try {
+      const { error, value } = productSchema.validate(prod);
+
       if (error) {
         throw new Error(`Invalid product data: ${error.message}`);
       }
+
       const result = await products.addProduct(
         prod.productName,
         prod.productRibbon,
@@ -369,12 +371,13 @@ router
         prod.productCostPrice,
         prod.productInventoryStatus,
         prod.productWeight,
-        prod.productStockCount
+        prod.productStockCount,
+        prod.imageURL
       );
 
       return res.status(200).json(result);
     } catch (error) {
-      return res.status(400).send({ error: error.message });
+      return res.status(500).send({ error: error.message });
     }
   });
 

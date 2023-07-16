@@ -1,28 +1,56 @@
-<div class="container">
-    <div class="row">
-      <div class="col">
-        <!-- Products will go here -->
-      </div>
+<div class="container my-5">
+    <div class="card shadow-lg">
+      <div class="card-body">
+        <div class="container-fluid">
+          <div class="input-group mb-3">
+            <span class="input-group-text bg-light" id="filter-input"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control my-filter" placeholder="Filter" aria-label="Filter" aria-describedby="filter-input" (keyup)="applyFilter($event)">
+          </div>
+          <div class="table-responsive">
+            <table mat-table [dataSource]="products" matSort class="table rounded-lg">
+                
+              <!-- Image Column -->
+              <ng-container matColumnDef="image">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light text-dark">Image</th>
+                <td mat-cell *matCellDef="let product"> <img [src]="product.imageURL" height="50" width="50"> </td>
+              </ng-container>
+      
+              <!-- Product Name Column -->
+              <ng-container matColumnDef="productName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light text-dark">Product Name</th>
+                <td mat-cell *matCellDef="let product">
+                    <a href="#" (click)="logProductName(product.productName); $event.preventDefault()">{{product.productName}}</a>
+                </td>
+              </ng-container>
   
-      <div class="col text-right">
-        <button class="btn btn-primary" (click)="openProductForm()">
-          <i class="fas fa-plus"></i> Add Product
-        </button>
+              <!-- Product Sell Price Column -->
+              <ng-container matColumnDef="productSellPrice">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light text-dark">Price</th>
+                <td mat-cell *matCellDef="let product" class="centered-cell"> {{product.productSellPrice}} </td>
+              </ng-container>
+      
+              <!-- Product Inventory Status Column -->
+              <ng-container matColumnDef="productInventoryStatus">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light text-dark">Inventory Status</th>
+                <td mat-cell *matCellDef="let product">
+                    <span *ngIf="product.productInventoryStatus === 'Pre-Order'" class="badge badge-pre-order">{{product.productInventoryStatus}}</span>
+                    <span *ngIf="product.productInventoryStatus === 'In Stock'" class="badge badge-in-stock">{{product.productInventoryStatus}}</span>
+                    <span *ngIf="product.productInventoryStatus === 'Out of stock'" class="badge badge-out-of-stock">{{product.productInventoryStatus}}</span>
+                </td>
+              </ng-container>
+  
+              <!-- Product Stock Count Column -->
+              <ng-container matColumnDef="productStockCount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light text-dark">Stock Count</th>
+                <td mat-cell *matCellDef="let product" class="centered-cell"> {{product.productStockCount}} </td>
+              </ng-container>
+      
+              <tr mat-header-row *matHeaderRowDef="displayedColumns" class="header-row bg-light"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                
+            </table>
+          </div>
+        </div>
       </div>
     </div>
-  
-    <div *ngIf="showForm" class="mt-4">
-      <div class="card">
-        <div class="card-header">
-          <h5>Add Product</h5>
-          <button class="close" (click)="closeProductForm()">&times;</button>
-        </div>
-        <div class="card-body">
-          <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-            <!-- Form fields go here -->
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-  
+</div>

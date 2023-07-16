@@ -40,6 +40,7 @@ const exportedMethods = {
     productInventoryStatus: Joi.string().required(),
     productWeight: Joi.number().strict().required(),
     productStockCount: Joi.number().integer().strict().required(),
+    imageURL: Joi.string().uri().required(),
   }),
 
   checkString(strVal, varName) {

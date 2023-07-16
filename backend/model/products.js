@@ -19,7 +19,8 @@ export const addProduct = async (
   productCostPrice,
   productInventoryStatus,
   productWeight,
-  productStockCount
+  productStockCount,
+  imageURL
 ) => {
   try {
     const product = {
@@ -33,6 +34,7 @@ export const addProduct = async (
       productInventoryStatus: productInventoryStatus,
       productWeight: productWeight,
       productStockCount: productStockCount,
+      imageURL: imageURL,
     };
 
     const { error, value } = productSchema.validate(product);
@@ -65,6 +67,7 @@ export const addProduct = async (
       productInventoryStatus: productInventoryStatus,
       productWeight: productWeight,
       productStockCount: productStockCount,
+      imageURL: imageURL,
     };
 
     const insertInfo = await productsTable.insertOne(productData);

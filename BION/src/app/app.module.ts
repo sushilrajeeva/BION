@@ -28,6 +28,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ProductsComponent } from './admin/products/products.component';
 
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,6 +57,8 @@ import { ProductsComponent } from './admin/products/products.component';
     NgbModule, // add it to the imports
     FontAwesomeModule,
     NgbAccordionModule,
+    MatTableModule,
+    MatSortModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
