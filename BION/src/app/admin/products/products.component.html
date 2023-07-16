@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="row">
+      <div class="col">
+        <!-- Products will go here -->
+      </div>
+  
+      <div class="col text-right">
+        <button class="btn btn-primary" (click)="openProductForm()">
+          <i class="fas fa-plus"></i> Add Product
+        </button>
+      </div>
+    </div>
+  
+    <div *ngIf="showForm" class="mt-4">
+      <div class="card">
+        <div class="card-header">
+          <h5>Add Product</h5>
+          <button class="close" (click)="closeProductForm()">&times;</button>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+            <!-- Form fields go here -->
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

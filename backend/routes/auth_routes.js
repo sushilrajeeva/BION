@@ -15,6 +15,7 @@ import jwt from "jsonwebtoken";
 
 import middlewareMethods from "../middleware/middleware.js";
 import blackListedToken from "../model/blackListedToken.js";
+import products from "../model/products.js";
 
 router.route("/").get(async (req, res) => {
   //code here for GET THIS ROUTE SHOULD NEVER FIRE BECAUSE OF MIDDLEWARE #1 IN SPECS.
@@ -325,5 +326,71 @@ router.get(
     return res.send("Customer route accessed!!");
   }
 );
+
+router
+  .route("/admin/products/addProduct")
+  .post(auth, middlewareMethods.adminOnly, async (req, res) => {
+    console.log("Entered admin/products/addProduct Route!!");
+
+    const productSchema = helpers.productSchema;
+
+    let prod = {
+      productName: xss(req.body.productName),
+      productRibbon: xss(req.body.productRibbon),
+      productDescription: xss(req.body.productDescription),
+      productCategory: req.body.productCategory.map((item) => xss(item)), // Assuming productCategory is an array of strings
+      additionalInfo: req.body.additionalInfo.map((info) => {
+        // Assuming additionalInfo is an array of objects
+        return {
+          infoTag: xss(info.infoTag),
+          infoDescription: xss(info.infoDescription),
+        };
+      }),
+      productSellPrice: req.body.productSellPrice,
+      productCostPrice: req.body.productCostPrice,
+      productInventoryStatus: xss(req.body.productInventoryStatus),
+      productWeight: req.body.productWeight,
+      productStockCount: req.body.productStockCount,
+    };
+
+    const { error, value } = productSchema.validate(prod);
+
+    try {
+      if (error) {
+        throw new Error(`Invalid product data: ${error.message}`);
+      }
+      const result = await products.addProduct(
+        prod.productName,
+        prod.productRibbon,
+        prod.productDescription,
+        prod.productCategory,
+        prod.additionalInfo,
+        prod.productSellPrice,
+        prod.productCostPrice,
+        prod.productInventoryStatus,
+        prod.productWeight,
+        prod.productStockCount
+      );
+
+      return res.status(200).json(result);
+    } catch (error) {
+      return res.status(400).send({ error: error.message });
+    }
+  });
+
+router
+  .route("/admin/products/allproducts")
+  .get(auth, middlewareMethods.adminOnly, async (req, res) => {
+    try {
+      const allProducts = await products.getAllProducts();
+      return res.status(200).json(allProducts);
+    } catch (error) {
+      return res.status(400).send({ error: error.message });
+    }
+  });
+
+router.route("/test").post(async (req, res) => {
+  console.log("test works!!");
+});
 
 export default router;

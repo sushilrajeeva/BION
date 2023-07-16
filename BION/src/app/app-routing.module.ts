@@ -6,6 +6,7 @@ import { LoginComponent } from './login/login.component';
 import { AboutBionComponent } from './about-bion/about-bion.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ProductsComponent } from './admin/products/products.component';
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'aboutbion', component: AboutBionComponent },
   { path: 'contact', component: ContactUsComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'admin/products', component: ProductsComponent },
   { path: '**', redirectTo: '' }, // Redirect all unknown paths to homepage
 ];
 

@@ -1,6 +1,7 @@
 //Used professor's lecture code 5 and my lab6 helper functions i created previously for my reference
 
 import { ObjectId } from "mongodb";
+import Joi from "joi";
 
 const exportedMethods = {
   description: "This is my helper function BION Backend",
@@ -20,6 +21,26 @@ const exportedMethods = {
     }
     return id;
   },
+
+  productSchema: Joi.object({
+    productName: Joi.string().required(),
+    productRibbon: Joi.string().required(),
+    productDescription: Joi.string().required(),
+    productCategory: Joi.array().items(Joi.string()).required(),
+    additionalInfo: Joi.array()
+      .items(
+        Joi.object({
+          infoTag: Joi.string().required(),
+          infoDescription: Joi.string().required(),
+        })
+      )
+      .required(),
+    productSellPrice: Joi.number().strict().required(),
+    productCostPrice: Joi.number().strict().required(),
+    productInventoryStatus: Joi.string().required(),
+    productWeight: Joi.number().strict().required(),
+    productStockCount: Joi.number().integer().strict().required(),
+  }),
 
   checkString(strVal, varName) {
     if (!strVal) throw `Error: You must supply a ${varName}!`;

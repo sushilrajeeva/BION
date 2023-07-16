@@ -19,3 +19,4 @@ const getCollectionFn = (collection) => {
 export const adminCollection = getCollectionFn("admin");
 export const customerCollection = getCollectionFn("customer");
 export const blackListedTokenCollection = getCollectionFn("BlacklistedToken");
+export const productsCollection = getCollectionFn("products");
