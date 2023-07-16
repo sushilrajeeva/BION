@@ -71,6 +71,11 @@ export class LoginComponent implements OnInit {
               .afterDismissed()
               .subscribe(() => {
                 this.loginStatusService.changeLoginStatus(true);
+                console.log(
+                  'fROM LOGIN USER TYPE ',
+                  JSON.stringify(sessionUser.userType)
+                );
+
                 this.loginStatusService.changeUserType(sessionUser.userType);
                 console.log(sessionStorage.getItem('sessionUser'));
                 console.log(sessionStorage.getItem('token'));

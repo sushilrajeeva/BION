@@ -18,6 +18,8 @@ export class LoginStatusService {
   }
 
   changeUserType(type: string) {
+    console.log('change user type is called', type);
+
     this.userType.next(type);
   }
 }

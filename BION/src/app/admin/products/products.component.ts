@@ -2,6 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdminService } from 'src/app/services/admin.service';
+import { Router } from '@angular/router';
+import { SharedService } from 'src/app/services/shared.service';
+import { Product } from 'src/app/models/product.model';
 
 @Component({
   selector: 'app-products',
@@ -16,22 +19,26 @@ export class ProductsComponent implements OnInit {
     'productInventoryStatus',
     'productStockCount',
   ];
-  products!: MatTableDataSource<any>;
-  public productsArray: any[] = [];
+  products!: MatTableDataSource<Product>;
+  productsArray: Product[] = [];
 
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private adminService: AdminService) {}
+  constructor(
+    private adminService: AdminService,
+    private router: Router,
+    private sharedService: SharedService
+  ) {}
 
   ngOnInit(): void {
     this.adminService.getAllProducts().subscribe(
-      (data: any[]) => {
-        this.productsArray = [...data]; // Save the product data to the array
+      (data: Product[]) => {
+        this.productsArray = data; // Save the product data to the array
         this.products = new MatTableDataSource(data);
         this.products.sort = this.sort;
       },
       (error) => {
-        console.log(error);
+        console.error('Failed to fetch products: ', error);
       }
     );
   }
@@ -41,10 +48,19 @@ export class ProductsComponent implements OnInit {
     this.products.filter = filterValue.trim().toLowerCase();
   }
 
-  logProductName(productName: string) {
-    const product = this.productsArray.find(
-      (prod) => prod.productName === productName
+  manageProduct(productName: string) {
+    // Find the product with the given productName
+    let product = this.productsArray.find(
+      (product) => product.productName === productName
     );
-    console.log(product);
+
+    if (product) {
+      this.sharedService.setProductData(product);
+
+      // Navigate to the manageProduct component and pass the product data
+      this.router.navigate(['/admin/manageProduct']);
+    } else {
+      console.error('Product not found: ', productName);
+    }
   }
 }

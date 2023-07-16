@@ -1,0 +1,23 @@
+.custom-badge {
+    display: inline-block;
+    padding: .55em .8em;  /* Increased padding for bigger badge */
+    margin: 0 5px 5px 0;
+    font-size: 85%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+    background-color: #6c757d;
+    color: white;
+    position: relative;
+    cursor: pointer;  /* Add this to indicate badge is clickable */
+}
+
+.cross-icon {
+    margin-left: 5px;
+    cursor: pointer;
+    color: black; 
+    font-weight: bold;  /* Add this line to make cross bold */
+}

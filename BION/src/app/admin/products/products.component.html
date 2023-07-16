@@ -19,7 +19,7 @@
               <ng-container matColumnDef="productName">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light text-dark">Product Name</th>
                 <td mat-cell *matCellDef="let product">
-                    <a href="#" (click)="logProductName(product.productName); $event.preventDefault()">{{product.productName}}</a>
+                    <a href="#" (click)="manageProduct(product.productName); $event.preventDefault()">{{product.productName}}</a>
                 </td>
               </ng-container>
   

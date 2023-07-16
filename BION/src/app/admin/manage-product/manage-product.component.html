@@ -1,0 +1,153 @@
+<!-- Glossy Header -->
+    <div class="container-fluid text-center py-3 bg-primary text-white d-flex align-items-center justify-content-between">
+        <button class="btn btn-light" routerLink="/admin/products">
+        <i class="fa fa-arrow-left"></i> Back
+        </button>
+        <h1 class="flex-grow-1 text-center m-0">{{ product.productName }}</h1>
+        <button class="btn btn-success rounded-pill" (click)="saveProduct()">
+        Save <i class="fa fa-check"></i>
+        </button>
+    </div>
+  
+  
+  <div class="container mt-5">
+    <!-- Image and Video Card -->
+    <div class="card w-70 mx-auto mb-4">
+      <div class="card-header">Images and Videos</div>
+      <div class="card-body">
+        <img [src]="product.imageURL" class="img-fluid">
+      </div>
+    </div>
+  
+    <!-- Product Info Card -->
+    <!-- Product Info Card -->
+    <div class="card w-70 mx-auto mb-4">
+        <div class="card-header">Product Info</div>
+        <div class="card-body">
+          <form [formGroup]="productForm">
+            <div class="form-group">
+              <label for="productName">Product Name</label>
+              <input
+                type="text"
+                id="productName"
+                formControlName="productName"
+                class="form-control"
+              />
+            </div>
+    
+            <div class="form-group">
+              <label for="productRibbon">Product Ribbon</label>
+              <input
+                type="text"
+                id="productRibbon"
+                formControlName="productRibbon"
+                class="form-control"
+              />
+            </div>
+    
+            <div class="form-group">
+              <label for="productDescription">Product Description</label>
+              <ckeditor
+                formControlName="productDescription"
+                [editor]="Editor"
+              ></ckeditor>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+  
+  
+    
+    <!-- Additional Info Card -->
+    <div class="card w-70 mx-auto mb-4">
+        <div class="card-header">Additional Info</div>
+        <div class="card-body">
+        <button class="btn btn-primary" (click)="addAdditionalInfo()">Add additional info</button>
+        <table class="table mt-3">
+            <thead>
+            <tr>
+                <th>Info Tag</th>
+                <th>Info Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let additionalInfo of product.additionalInfo; let i = index">
+                <td><input type="text" class="form-control" [(ngModel)]="additionalInfo.infoTag" /></td>
+                <td><input type="text" class="form-control" [(ngModel)]="additionalInfo.infoDescription" /></td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+
+    <!-- Pricing and Inventory Card -->
+    <div class="card w-70 mx-auto mb-4 rounded">
+        <div class="card-header">Pricing and Inventory</div>
+        <div class="card-body">
+            <form [formGroup]="pricingForm">
+                <div class="form-group">
+                    <label for="productSellPrice">Product Sell Price (₹)</label>
+                    <input type="number" id="productSellPrice" formControlName="productSellPrice" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label for="productCostPrice">Product Cost Price (₹)</label>
+                    <input type="number" id="productCostPrice" formControlName="productCostPrice" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label for="profit">Profit</label>
+                    <input type="text" id="profit" class="form-control" 
+                    [value]="'₹' + ((pricingForm.get('productSellPrice')?.value || 0) - (pricingForm.get('productCostPrice')?.value || 0))" disabled/>
+                </div>
+                
+    
+                <!-- Margin field -->
+                <div class="form-group">
+                    <label for="margin">Margin</label>
+                    <input type="text" id="margin" class="form-control" 
+                    [value]="(pricingForm.get('productSellPrice')?.value && pricingForm.get('productCostPrice')?.value && pricingForm.get('productSellPrice')?.value != 0) ? (((pricingForm.get('productSellPrice')?.value - pricingForm.get('productCostPrice')?.value) / pricingForm.get('productSellPrice')?.value) * 100 | number : '1.0-0') + '%' : 'N/A'" disabled/>
+                </div>
+                
+    
+
+                <div class="form-group">
+                    <label for="productWeight">Product Weight</label>
+                    <input type="number" id="productWeight" formControlName="productWeight" class="form-control" />
+                </div>
+
+                <!-- within Pricing and Inventory Card -->
+                <div class="form-group">
+                    <label for="productCategory">Product Category</label>
+                    <div>
+                        <i>You can click on the badge to remove the badge element</i>
+                        <br>
+                        <span *ngFor="let category of prodCategory" class="custom-badge" (click)="removeCategory(category)">
+                            {{category}}
+                            <i class="fa fa-times cross-icon" aria-hidden="true"></i>
+                        </span>
+                        
+                    </div>
+                </div>
+
+                
+
+                <!-- Add Category section -->
+            <div class="form-group">
+                <label for="newCategory">Add Category</label>
+                <div class="input-group">
+                    <input type="text" id="newCategory" class="form-control" [formControl]="newCategory" placeholder="Enter new category">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2" (click)="addCategory()">+</button>
+                    </div>
+                </div>
+            </div>
+
+            </form>
+        </div>
+    </div>
+
+  
+  

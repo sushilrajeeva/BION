@@ -154,7 +154,7 @@ router.route("/admin/login").post(async (req, res) => {
 
     return res.status(200).json({
       successMsg: "Admin is logged in successfully!",
-      sessionUser: xss(req.session.user),
+      sessionUser: req.session.user,
       token: xss(jwtToken),
     });
   } catch (error) {
@@ -211,7 +211,7 @@ router.route("/customer/login").post(async (req, res) => {
 
     return res.status(200).json({
       successMsg: "Customer is logged in successfully!",
-      sessionUser: xss(req.session.user),
+      sessionUser: req.session.user,
       token: xss(jwtToken),
     });
   } catch (error) {

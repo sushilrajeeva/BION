@@ -30,6 +30,9 @@ import { ProductsComponent } from './admin/products/products.component';
 
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { ManageProductComponent } from './admin/manage-product/manage-product.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -42,6 +45,7 @@ import { MatSortModule } from '@angular/material/sort';
     ContactUsComponent,
     ForgotPasswordComponent,
     ProductsComponent,
+    ManageProductComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +63,8 @@ import { MatSortModule } from '@angular/material/sort';
     NgbAccordionModule,
     MatTableModule,
     MatSortModule,
+    CKEditorModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

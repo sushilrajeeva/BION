@@ -34,6 +34,7 @@ export class NavbarComponent implements OnInit {
     this.sessionUser = storedUser ? JSON.parse(storedUser) : null;
     this.isLoggedIn = !!this.sessionUser;
     this.userType = this.sessionUser ? this.sessionUser.userType : '';
+    console.log('Updated user type is', this.userType);
   }
 
   logout(): void {
